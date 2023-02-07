@@ -1,0 +1,46 @@
+Router>ena
+Router#conf t
+Router(config)#hostname Vallalati-R
+Vallalati-R>ena
+Vallalati-R#conf t
+Vallalati-R(config)#interface g0/1
+Vallalati-R(config-if)#ip address 192.168.20.78 255.255.255.240
+Vallalati-R(config-if)#no sh
+Vallalati-R(config-if)#exit
+Vallalati-R(config)#interface g0/0
+Vallalati-R(config-if)#ip address 192.168.20.62 255.255.255.192
+Vallalati-R(config-if)#no sh
+Vallalati-R(config-if)#int s0/0/0
+Vallalati-R(config-if)#ip address 210.20.20.2 255.255.255.252
+Vallalati-R(config-if)#no sh
+Vallalati-R(config-if)#ip route 0.0.0.0 0.0.0.0 s0/0/0
+Vallalati-R(config-line)#login
+Vallalati-R(config-line)#ena secret vizsga2023
+Vallalati-R(config)#ip domain-name vallalat.hu
+Vallalati-R(config)#username admin sec admin2023
+Vallalati-R(config)#crypto key generate rsa
+Vallalati-R(config)#line vty 0 4
+Vallalati-R(config-line)#transport input ssh
+Vallalati-R(config-line)#login local
+Vallalati-R(config-line)#exit
+Vallalati-R(config)#ip ssh v 2
+Vallalati-R(config)#end
+Vallalati-R#w
+
+ISP   Router>ena
+ISP   Router#ho ISP
+ISP   Router#conf t
+ISP   Router(config)#hostname ISP
+ISP   ISP(config)#int S0/2/0
+ISP   ISP(config-if)#ip address 210.20.20.1 255.255.255.252
+ISP   ISP(config-if)#cl ra 128000
+ISP   ISP(config-if)#no sh
+ISP   ISP(config-if)#int g0/0/0
+ISP   ISP(config-if)#ip address 209.10.10.1 255.255.255.252
+ISP   ISP(config-if)#no sh
+ISP   ISP>exit
+ISP   ISP(config)#ip route
+ISP   ISP(config)#ip route 192.168.20.0 255.255.255.0 s0/2/0
+ISP   ISP(config)#no sh
+ISP   ISP(config)#w
+ISP   ISP(config)#end
