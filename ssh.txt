@@ -1,0 +1,89 @@
+Iskola   Router>ena
+Iskola   Router#conf t
+Iskola   Router(config)#hostname Iskola-R
+Iskola   Iskola-R(config)#interface g0/0
+Iskola   Iskola-R(config-if)#ip add 192.168.10.70 255.255.255.248
+Iskola   Iskola-R(config-if)#no sh
+Iskola   Iskola-R(config-if)#int g0/1
+Iskola   Iskola-R(config-if)#ip add 192.168.10.62 255.255.255.192
+Iskola   Iskola-R(config-if)#no sh
+Iskola   Iskola-R(config-if)#int s0/0/0
+Iskola   Iskola-R(config-if)#ip add 200.100.50.2 255.255.255.252
+Iskola   Iskola-R(config-if)#no sh
+Iskola   Iskola-R(config-if)#ip route 0.0.0.0 0.0.0.0 s0/0/0
+Iskola   Iskola-R(config)#line con 0
+Iskola   Iskola-R(config-line)#pas con123
+Iskola   Iskola-R(config-line)#login
+Iskola   Iskola-R(config-line)#line vty 0 4
+Iskola   Iskola-R(config-line)#pass vty123
+Iskola   Iskola-R(config-line)#login
+Iskola   Iskola-R(config-line)#exit
+Iskola   Iskola-R(config)#ser password-encryption 
+Iskola   Iskola-R(config)#ena secret ena123
+Iskola   Iskola-R(config)#ip domain-name iskola.hu
+Iskola   Iskola-R(config)#username admin sec ssh123
+Iskola   Iskola-R(config)#username Robi sec robi123
+Iskola   Iskola-R(config)#crypto key generate rsa
+Iskola   Iskola-R(config)#line vty 0 4
+Iskola   Iskola-R(config-line)#transport input ssh
+Iskola   Iskola-R(config-line)#login local
+Iskola   Iskola-R(config-line)#exit
+Iskola   Iskola-R(config)#ip ssh v 2
+Iskola   Iskola-R(config)#end
+Iskola   Iskola-R#w
+
+Tanár   C:\>ssh -l 192.168.10.62
+Iskola   Iskola-R>ena
+Iskola   Iskola-R#conf t
+Iskola   Iskola-R(config)#end
+Iskola   Iskola-R#exit
+
+Tanár-SW   Switch>ena
+Tanár-SW   Switch#conf t
+Tanár-SW   Switch(config)#hostname Tanar-Sw
+Tanár-SW   Tanar-Sw(config)#line con 0
+Tanár-SW   Tanar-Sw(config-line)#password con123
+Tanár-SW   Tanar-Sw(config-line)#login
+Tanár-SW   Tanar-Sw(config-line)#exit
+Tanár-SW   Tanar-Sw(config)#ena secret ena123
+Tanár-SW   Tanar-Sw(config)#ip domain-n iskola.hu
+Tanár-SW   Tanar-Sw(config)#username admin sec ssh123
+Tanár-SW   Tanar-Sw(config)#crypto key generate rsa
+Tanár-SW   Tanar-Sw(config)#line vty 0 15
+Tanár-SW   Tanar-Sw(config-line)#transport input ssh
+Tanár-SW   Tanar-Sw(config-line)#login local
+Tanár-SW   Tanar-Sw(config-line)#exit
+Tanár-SW   Tanar-Sw(config)#int vlan 1
+Tanár-SW   Tanar-Sw(config-if)#ip add 192.168.10.61 255.255.255.192
+Tanár-SW   Tanar-Sw(config-if)#no sh
+Tanár-SW   Tanar-Sw(config-if)#exi
+Tanár-SW   Tanar-Sw>ena
+Tanár-SW   Tanar-Sw#conf t
+Tanár-SW   Tanar-Sw(config)#ip default-gateway 192.168.10.62
+Tanár-SW   Tanar-Sw(config)#exit
+Tanár-SW   Tanar-Sw#w
+Tanár-SW   Tanar-Sw>w
+Tanár-SW   Tanar-Sw>ena
+Tanár-SW   Tanar-Sw#w
+Tanár-SW   Tanar-Sw#exit
+Tanár-SW   Tanar-Sw>ena
+Tanár-SW   Tanar-Sw#exit
+
+ISP   Router>ena
+ISP   Router#conf t
+ISP   Router(config)#hostname ISP
+ISP   ISP(config)#int s0/2/0
+ISP   ISP(config-if)#ip add 200.100.50.1 255.255.255.252
+ISP   ISP(config-if)#clock rate 128000
+ISP   ISP(config-if)#no shutdown 
+ISP   ISP(config-if)#int g0/0/1
+ISP   ISP(config-if)#ip add 172.16.10.30 255.255.255.224
+ISP   ISP(config-if)#no sh
+ISP   ISP(config-if)#int g0/0/0
+ISP   ISP(config-if)#ip add 100.100.100.1 255.255.255.252
+ISP   ISP(config-if)#no sh
+ISP   ISP(config-if)#exit
+ISP   ISP(config)#ip route 192.168.10.0 255.255.255.0 s0/2/0
+ISP   ISP(config)#w
+ISP   ISP(config)#exit
+ISP   ISP#w
